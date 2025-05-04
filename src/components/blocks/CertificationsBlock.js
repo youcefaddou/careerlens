@@ -247,7 +247,7 @@ export default function CertificationsBlock({ blockData }) {
           >
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                <h3 className="text-lg font-medium text-black dark:text-white">
                   {cert.name}
                 </h3>
                 <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">

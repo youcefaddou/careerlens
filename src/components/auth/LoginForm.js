@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useAuth } from '@/context/AuthContext'
+import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 export default function LoginForm({ onRegisterClick }) {
@@ -12,7 +12,8 @@ export default function LoginForm({ onRegisterClick }) {
     rememberMe: false
   })
   const [errors, setErrors] = useState({})
-  const { login, loading } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const { data: session } = useSession()
   const router = useRouter()
 
   const handleChange = (e) => {
@@ -58,22 +59,29 @@ export default function LoginForm({ onRegisterClick }) {
     }
     
     try {
-      // Utiliser la fonction login du contexte d'authentification
-      const result = await login(formData.email, formData.password)
+      setLoading(true)
+      // Utiliser directement signIn de next-auth
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      })
       
-      if (result.success) {
-        // Rediriger après connexion réussie
-        router.push('/')
-      } else {
+      if (result.error) {
         setErrors({
           form: result.error || 'Échec de la connexion. Veuillez vérifier vos identifiants.'
         })
+      } else {
+        // Rediriger après connexion réussie
+        router.push('/')
       }
     } catch (error) {
       console.error('Erreur de connexion:', error)
       setErrors({
         form: 'Une erreur est survenue lors de la connexion.'
       })
+    } finally {
+      setLoading(false)
     }
   }
 

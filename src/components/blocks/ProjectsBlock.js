@@ -266,22 +266,29 @@ export default function ProjectsBlock({ blockData }) {
         {data.projects.map((project, index) => (
           <div 
             key={index} 
-            className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+            className={`project-card border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-shadow ${index === 0 ? 'col-span-2 md:col-span-1' : ''}`}
           >
-            {/* Image du projet */}
-            <div className="relative w-full h-48 bg-gray-200 dark:bg-gray-700">
-              {/* Simulation d'image - dans une implémentation réelle, utiliser de vraies images */}
-              <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+            {project.image && (
+              <div className="relative h-48 w-full">
+                <Image 
+                  src={project.image} 
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                />
               </div>
-            </div>
+            )}
             
             {/* Contenu du projet */}
             <div className="p-4">
               {/* Titre du projet */}
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className={`text-lg font-semibold mb-2 ${
+                // Appliquer le texte blanc pour les projets spécifiques
+                ['E-Commerce NextJS', 'API RESTful', 'Application mobile React Native', 'Application React E-Commerce', 'Portfolio Next.js', 'API RESTful Node.js'].includes(project.title)
+                  ? 'project-title-white'
+                  : 'text-black dark:text-white'
+              }`}>
                 {project.title}
                 {project.featured && (
                   <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">

@@ -128,7 +128,7 @@ export default function EducationBlock({ blockData }) {
             
             {/* Content */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-black dark:text-white">
                 {edu.degree}
                 {edu.specialization && (
                   <span className="text-gray-700 dark:text-gray-300 font-normal"> - {edu.specialization}</span>

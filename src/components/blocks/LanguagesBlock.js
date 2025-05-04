@@ -131,7 +131,7 @@ export default function LanguagesBlock({ blockData }) {
         {data.languages.map((language, index) => (
           <div key={index} className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="w-full md:w-32 flex-shrink-0">
-              <h3 className="text-base font-medium text-gray-900 dark:text-white">
+              <h3 className="text-base font-medium text-black dark:text-white">
                 {language.name}
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">

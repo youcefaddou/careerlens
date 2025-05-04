@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuth } from '@/context/AuthContext'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 export default function RegisterForm({ onLoginClick }) {
@@ -15,7 +15,7 @@ export default function RegisterForm({ onLoginClick }) {
     acceptTerms: false
   })
   const [errors, setErrors] = useState({})
-  const { register, loading } = useAuth()
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleChange = (e) => {
@@ -83,22 +83,48 @@ export default function RegisterForm({ onLoginClick }) {
     }
     
     try {
-      // Utiliser la fonction register du contexte d'authentification
-      const result = await register(formData)
+      setLoading(true)
       
-      if (result.success) {
-        // Rediriger après inscription réussie
-        router.push('/')
-      } else {
+      // Appel API pour créer l'utilisateur directement
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
         setErrors({
-          form: result.error || 'Échec de l\'inscription. Veuillez réessayer.'
+          form: data.message || 'Échec de l\'inscription. Veuillez réessayer.'
         })
+        return
+      }
+      
+      // Connexion automatique après inscription réussie
+      const loginResult = await signIn('credentials', {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      })
+      
+      if (loginResult.error) {
+        setErrors({
+          form: loginResult.error || 'Inscription réussie, mais échec de la connexion automatique.'
+        })
+      } else {
+        // Redirection après inscription et connexion réussies
+        router.push('/')
       }
     } catch (error) {
       console.error('Erreur d\'inscription:', error)
       setErrors({
         form: 'Une erreur est survenue lors de l\'inscription.'
       })
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -130,7 +156,7 @@ export default function RegisterForm({ onLoginClick }) {
               checked={formData.profileType === 'recruiter'}
               onChange={handleChange}
             />
-            <span className="ml-2 text-sm">Recruteur</span>
+            <span className="ml-2 text-sm text-white">Entreprise</span>
           </label>
           <label className={`flex-1 flex items-center p-3 border rounded-md cursor-pointer transition-colors ${
             formData.profileType === 'candidate' 
@@ -145,7 +171,7 @@ export default function RegisterForm({ onLoginClick }) {
               checked={formData.profileType === 'candidate'}
               onChange={handleChange}
             />
-            <span className="ml-2 text-sm">Candidat</span>
+            <span className="ml-2 text-sm text-white">Développeur</span>
           </label>
         </div>
       </div>

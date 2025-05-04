@@ -145,7 +145,7 @@ export default function SkillsBlock({ blockData }) {
       
       {/* Compétences techniques */}
       <div className="mb-8">
-        <h3 className="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">Compétences techniques</h3>
+        <h3 className="text-lg font-medium mb-4 text-black dark:text-gray-200">Compétences techniques</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {data.technicalSkills.map((skill, index) => (
             <div key={index} className="space-y-2">
@@ -166,7 +166,7 @@ export default function SkillsBlock({ blockData }) {
       
       {/* Compétences personnelles */}
       <div>
-        <h3 className="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">Compétences personnelles</h3>
+        <h3 className="text-lg font-medium mb-4 text-black dark:text-gray-200">Compétences personnelles</h3>
         <div className="flex flex-wrap gap-3">
           {data.softSkills.map((skill, index) => (
             <div 

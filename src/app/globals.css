@@ -24,7 +24,44 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Styles pour les barres de défilement */
+/* Règles pour assurer la visibilité des titres dans tous les modes */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+}
+
+h3 {
+  color: #ffffff !important;
+}
+
+.dark h3 {
+  color: #ffffff !important;
+}
+
+/* Cibler aussi les h3 avec classes tailwind spécifiques */
+.text-xl, .text-lg, .text-base {
+  color: inherit;
+}
+
+/* Classes spécifiques pour les titres des projets */
+.project-title-white {
+  color: #ffffff !important;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.project-title-black {
+  color: #000000 !important;
+}
+
+/* Force les titres de projets spécifiques à être en blanc */
+.project-card h3.project-title-white {
+  color: white !important;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark .project-card h3 {
+  color: white !important;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;

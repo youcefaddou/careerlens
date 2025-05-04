@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-import { useAuth } from '@/context/AuthContext'
+import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -12,7 +13,11 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   
-  const { user, isAuthenticated, logout } = useAuth()
+  const { data: session, status } = useSession()
+  const isAuthenticated = status === 'authenticated'
+  const user = session?.user
+  const router = useRouter()
+  
   const pathname = usePathname()
 
   // Gestion du mode sombre
@@ -49,9 +54,18 @@ export default function Header() {
   }
 
   // Fonction pour la déconnexion
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await signOut({ redirect: false })
+    router.push('/')
     setIsUserMenuOpen(false)
+  }
+
+  // Obtenir les initiales pour l'avatar
+  const getInitials = () => {
+    if (user?.firstName && user?.lastName) {
+      return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
+    }
+    return 'U';
   }
 
   // Liens de navigation
@@ -88,7 +102,7 @@ export default function Header() {
                 className={`text-sm font-medium transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
                   pathname === link.href 
                     ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-700 dark:text-gray-300'
+                    : 'text-gray-800 font-semibold dark:text-gray-300'
                 }`}
               >
                 {link.label}
@@ -98,7 +112,7 @@ export default function Header() {
             {/* Bouton Mode Sombre */}
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 font-semibold dark:text-gray-300"
               aria-label={isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'}
             >
               {isDarkMode ? (
@@ -117,14 +131,14 @@ export default function Header() {
               <div className="relative ml-3">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center rounded-full bg-gray-100 dark:bg-gray-800 p-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none"
+                  className="flex items-center rounded-full bg-gray-100 dark:bg-gray-800 p-1 text-gray-800 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none"
                   id="user-menu-button"
                   aria-expanded={isUserMenuOpen}
                   aria-haspopup="true"
                 >
                   <span className="sr-only">Ouvrir le menu utilisateur</span>
                   <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                    <span className="text-xs font-medium">{user?.avatarInitials || 'U'}</span>
+                    <span className="text-xs font-medium">{getInitials()}</span>
                   </div>
                 </button>
 
@@ -139,21 +153,21 @@ export default function Header() {
                   >
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block px-4 py-2 text-sm text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       role="menuitem"
                     >
                       Mon profil
                     </Link>
                     <Link
                       href="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block px-4 py-2 text-sm text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       role="menuitem"
                     >
                       Tableau de bord
                     </Link>
                     <Link
                       href="/settings"
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block px-4 py-2 text-sm text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       role="menuitem"
                     >
                       Paramètres
@@ -172,7 +186,7 @@ export default function Header() {
               <div className="flex items-center space-x-4">
                 <Link
                   href="/auth"
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                  className="text-sm font-medium text-gray-800 font-semibold dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Connexion
                 </Link>
@@ -190,7 +204,7 @@ export default function Header() {
           <div className="flex md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
+              className="p-2 rounded-md text-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
               aria-label="Menu principal"
             >
               {isMenuOpen ? (
@@ -218,7 +232,7 @@ export default function Header() {
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   pathname === link.href
                     ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                    : 'text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -231,17 +245,24 @@ export default function Header() {
               <>
                 <Link
                   href="/profile"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Mon profil
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Tableau de bord
+                </Link>
+                <Link
+                  href="/settings"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Paramètres
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -254,14 +275,14 @@ export default function Header() {
               <>
                 <Link
                   href="/auth"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 font-semibold dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Connexion
                 </Link>
                 <Link
                   href="/auth?tab=register"
-                  className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700"
+                  className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 hover:bg-blue-700 text-white"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Inscription
@@ -273,7 +294,7 @@ export default function Header() {
             <div className="px-3 py-2">
               <button
                 onClick={toggleDarkMode}
-                className="flex items-center w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="flex items-center w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-800 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 <span className="mr-3">
                   {isDarkMode ? (

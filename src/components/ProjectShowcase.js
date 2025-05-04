@@ -69,8 +69,10 @@ export default function ProjectShowcase() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {relevantProjects.map(project => (
-            <div key={project.id} className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 rounded-lg p-4 hover:shadow-lg transition-shadow">
-              <h3 className="text-xl font-medium">{project.title}</h3>
+            <div key={project.id} className="project-card border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 rounded-lg p-4 hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-medium">
+                {project.title}
+              </h3>
               <p className="text-gray-600 dark:text-gray-300 mt-2">{project.description}</p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {project.tags.map(tag => {

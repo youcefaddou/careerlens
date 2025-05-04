@@ -16,7 +16,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
             CareerLens <span className="text-blue-600 dark:text-blue-400">Portfolio</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
+          <p className="text-xl text-gray-900 dark:text-gray-300 max-w-2xl">
             Une plateforme intelligente qui adapte son contenu selon le profil du visiteur et ses intérêts
           </p>
         </div>

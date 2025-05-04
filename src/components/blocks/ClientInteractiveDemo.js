@@ -188,7 +188,7 @@ export default function ClientInteractiveDemo({ blockData }) {
       {/* Console de sortie */}
       {output && (
         <div className="mt-4">
-          <h3 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          <h3 className="text-sm font-medium mb-2 text-black dark:text-gray-300">
             Résultat
           </h3>
           <div className="bg-gray-900 text-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-line">

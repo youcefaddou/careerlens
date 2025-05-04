@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
@@ -11,14 +11,28 @@ export default function AuthTabs() {
   const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login'
   const [activeTab, setActiveTab] = useState(defaultTab)
 
+  // Synchroniser l'onglet actif avec les paramètres d'URL
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab')
+    if (tabFromUrl === 'register' || tabFromUrl === 'login') {
+      setActiveTab(tabFromUrl)
+    }
+  }, [searchParams])
+
   // Change l'onglet actif et met à jour l'URL
   const handleTabChange = (tab) => {
-    setActiveTab(tab)
-    
-    // Met à jour l'URL pour permettre le partage direct et les deeplinks
-    const url = new URL(window.location.href)
-    url.searchParams.set('tab', tab)
-    router.replace(`/auth?tab=${tab}`, { scroll: false })
+    // N'effectuer le changement que si l'onglet est différent
+    if (tab !== activeTab) {
+      setActiveTab(tab)
+      
+      // Met à jour l'URL pour permettre le partage direct et les deeplinks
+      // Utiliser une méthode qui ne provoque pas de re-rendu
+      const url = new URL(window.location.href)
+      url.searchParams.set('tab', tab)
+      
+      // Utiliser replaceState de l'API History au lieu de router.replace
+      window.history.replaceState({}, '', url.toString())
+    }
   }
 
   return (
