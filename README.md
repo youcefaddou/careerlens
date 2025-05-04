@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CareerLens
 
-## Getting Started
+CareerLens est une application de portfolio/CV adaptative qui personnalise le contenu en fonction du profil du visiteur. Développée avec Next.js, Tailwind CSS et MongoDB.
 
-First, run the development server:
+## Fonctionnalités
 
+- Interface utilisateur adaptative selon le profil du visiteur
+- Système d'authentification complet
+- Design moderne et responsive
+- Système de blocs modulaires pour présenter les compétences, projets, etc.
+- Support du mode clair/sombre
+
+## Démarrage rapide
+
+### Prérequis
+
+- Node.js (v18 ou supérieur)
+- npm ou yarn
+- MongoDB Atlas (pour la base de données)
+
+### Installation
+
+1. Cloner le dépôt :
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/youcefaddou/careerlens.git
+cd careerlens
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Installer les dépendances :
+```bash
+npm install
+# ou
+yarn install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. Configurer les variables d'environnement :
+- Créer un fichier `.env.local` à la racine du projet
+- Ajouter les variables suivantes :
+```
+MONGODB_URI=votre_uri_mongodb
+NEXTAUTH_SECRET=votre_secret_pour_nextauth
+NEXTAUTH_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Lancer le serveur de développement :
+```bash
+npm run dev
+# ou
+yarn dev
+```
 
-## Learn More
+5. Ouvrir [http://localhost:3000](http://localhost:3000) dans votre navigateur
 
-To learn more about Next.js, take a look at the following resources:
+## Structure du projet
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+careerlens/
+├── public/         # Fichiers statiques
+├── src/
+│   ├── app/        # Routes et pages (App Router)
+│   ├── components/ # Composants React
+│   ├── context/    # Contextes React
+│   ├── hooks/      # Hooks personnalisés
+│   ├── lib/        # Utilitaires et fonctions
+│   ├── models/     # Modèles Mongoose
+│   ├── providers/  # Providers (NextAuth, etc.)
+│   ├── types/      # Types TypeScript
+│   └── utils/      # Fonctions utilitaires
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Commandes importantes du projet
 
-## Deploy on Vercel
+### Gestion du projet
+```bash
+# Création du projet
+npx create-next-app@latest careerlens
+cd careerlens
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Installation des dépendances
+npm install next-auth bcrypt mongoose
+npm install @geist-ui/core geist geist-ui
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Lancement du serveur de développement
+npm run dev
+```
+
+### Commandes Git utilisées
+```bash
+# Création et changement de branches
+git checkout -b feature/backend-setup
+git checkout develop
+
+# Vérification de l'état
+git status
+
+# Ajout et commit des modifications
+git add .
+git commit -m "Description du commit"
+
+# Pousser les modifications
+git push origin feature/backend-setup
+
+# Fusionner une branche
+git merge feature/backend-setup
+
+# Pousser la branche develop
+git push origin develop
+```
